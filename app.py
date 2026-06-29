@@ -1,5 +1,5 @@
 """
-app.py -- Order-Book Imbalance Backtester (glowing dark teal UI).
+app.py -- Order-Book Imbalance Backtester (dark cool-blue UI).
 Reads from Supabase, runs the hysteresis backtest live.
 Credentials in .streamlit/secrets.toml (never in this file).
 Run:  streamlit run app.py
@@ -16,87 +16,85 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
-/* ---- base: deep teal-black ---- */
+/* base: deep navy-blue */
 .stApp {
-    background: radial-gradient(1200px 600px at 70% -10%, #0c2a2f 0%, #061417 45%, #030a0c 100%);
+    background: radial-gradient(1200px 600px at 72% -10%, #14233f 0%, #0b1424 45%, #060b16 100%);
 }
 header[data-testid="stHeader"] { background: transparent; }
 * { font-family: 'Inter', sans-serif; }
 .block-container { padding-top: 2.2rem; max-width: 1180px; }
 
-/* ---- sidebar ---- */
+/* sidebar */
 section[data-testid="stSidebar"] {
-    background: rgba(8,22,26,0.85); border-right: 1px solid rgba(45,212,191,0.12);
+    background: rgba(11,20,36,0.85); border-right: 1px solid rgba(96,165,250,0.12);
     backdrop-filter: blur(8px);
 }
 .sb-head {
     display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase;
-    color:#5eead4; margin:0.4rem 0 1.5rem 0;
+    color:#7eb6ff; margin:0.4rem 0 1.5rem 0;
 }
 .sb-head::before { content:""; width:4px; height:15px; border-radius:2px;
-    background:#2dd4bf; box-shadow:0 0 8px #2dd4bf; }
+    background:#3b82f6; box-shadow:0 0 8px #3b82f6; }
 
 section[data-testid="stSidebar"] .stSlider label {
-    color:#cbd5d1 !important; font-weight:600 !important; font-size:0.85rem !important;
+    color:#c4d2e8 !important; font-weight:600 !important; font-size:0.85rem !important;
 }
-/* slider filled track */
 section[data-testid="stSidebar"] .stSlider [data-baseweb="slider"] [data-testid="stSliderTrack"] > div {
-    background: linear-gradient(90deg,#0d9488,#2dd4bf) !important;
+    background: linear-gradient(90deg,#2563eb,#60a5fa) !important;
 }
-/* slider handle: glowing dot */
 section[data-testid="stSidebar"] .stSlider [role="slider"] {
-    background:#2dd4bf !important; border:3px solid #061417 !important;
-    box-shadow:0 0 0 2px #2dd4bf, 0 0 12px 2px rgba(45,212,191,0.7) !important;
+    background:#60a5fa !important; border:3px solid #0b1424 !important;
+    box-shadow:0 0 0 2px #60a5fa, 0 0 12px 2px rgba(96,165,250,0.7) !important;
 }
 section[data-testid="stSidebar"] .stSlider [data-testid="stThumbValue"] {
-    color:#5eead4 !important; font-weight:700 !important; font-family:'IBM Plex Mono',monospace !important;
+    color:#93c5fd !important; font-weight:700 !important; font-family:'IBM Plex Mono',monospace !important;
 }
 section[data-testid="stSidebar"] .stSlider [data-baseweb="slider"] > div > div {
-    background:#15333a !important;
+    background:#1e2d48 !important;
 }
 .sb-meta {
-    margin-top:2rem; padding:0.95rem 1.05rem; background:rgba(45,212,191,0.04);
-    border:1px solid rgba(45,212,191,0.15); border-radius:12px;
-    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#7c9a96; line-height:1.9;
+    margin-top:2rem; padding:0.95rem 1.05rem; background:rgba(96,165,250,0.04);
+    border:1px solid rgba(96,165,250,0.15); border-radius:12px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#8197b5; line-height:1.9;
 }
-.sb-meta b { color:#5eead4; font-weight:600; }
+.sb-meta b { color:#93c5fd; font-weight:600; }
 
-/* ---- hero ---- */
+/* hero */
 .brand { display:flex; align-items:center; gap:10px; margin-bottom:1.6rem; }
 .brand-dot { width:28px; height:28px; border-radius:50%;
-    background:radial-gradient(circle at 35% 35%,#5eead4,#0d9488);
-    box-shadow:0 0 14px rgba(45,212,191,0.7); }
-.brand-name { font-weight:700; font-size:1.3rem; color:#e6fffb; letter-spacing:-0.01em; }
+    background:radial-gradient(circle at 35% 35%,#93c5fd,#2563eb);
+    box-shadow:0 0 14px rgba(96,165,250,0.7); }
+.brand-name { font-weight:700; font-size:1.3rem; color:#eaf2ff; letter-spacing:-0.01em; }
 .hero-tag { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.22em;
-    text-transform:uppercase; color:#3f8a82; margin-bottom:0.5rem; }
-.hero-title { font-weight:800; font-size:2.7rem; color:#f0fffd; letter-spacing:-0.02em;
+    text-transform:uppercase; color:#5b7ba8; margin-bottom:0.5rem; }
+.hero-title { font-weight:800; font-size:2.7rem; color:#f2f7ff; letter-spacing:-0.02em;
     line-height:1.07; margin:0 0 0.6rem 0; }
-.hero-title .accent { color:#2dd4bf; text-shadow:0 0 24px rgba(45,212,191,0.45); }
-.hero-sub { color:#8aa6a1; font-size:1.0rem; max-width:640px; line-height:1.55; }
+.hero-title .accent { color:#60a5fa; text-shadow:0 0 24px rgba(96,165,250,0.45); }
+.hero-sub { color:#8fa3c2; font-size:1.0rem; max-width:640px; line-height:1.55; }
 
-/* ---- metric cards ---- */
+/* metric cards */
 .card-row { display:flex; gap:14px; margin:2rem 0 0.6rem 0; flex-wrap:wrap; }
-.card { flex:1; min-width:158px; background:rgba(13,40,45,0.55);
-    border:1px solid rgba(45,212,191,0.14); border-radius:14px; padding:1.15rem 1.3rem;
+.card { flex:1; min-width:158px; background:rgba(20,35,63,0.55);
+    border:1px solid rgba(96,165,250,0.14); border-radius:14px; padding:1.15rem 1.3rem;
     box-shadow:0 4px 24px rgba(0,0,0,0.3); }
 .card-label { font-family:'IBM Plex Mono',monospace; font-size:0.66rem; font-weight:600;
-    letter-spacing:0.13em; text-transform:uppercase; color:#5e8a84; margin-bottom:0.55rem; }
+    letter-spacing:0.13em; text-transform:uppercase; color:#6885ad; margin-bottom:0.55rem; }
 .card-value { font-family:'IBM Plex Mono',monospace; font-size:1.85rem; font-weight:600;
-    color:#e6fffb; line-height:1; }
-.pos { color:#2dd4bf !important; text-shadow:0 0 16px rgba(45,212,191,0.4); }
-.neg { color:#ff6b6b !important; text-shadow:0 0 16px rgba(255,107,107,0.3); }
+    color:#eaf2ff; line-height:1; }
+.pos { color:#34d399 !important; text-shadow:0 0 16px rgba(52,211,153,0.4); }
+.neg { color:#f87171 !important; text-shadow:0 0 16px rgba(248,113,113,0.35); }
 
 .section-label { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; font-weight:600;
-    letter-spacing:0.18em; text-transform:uppercase; color:#5e8a84; margin:2.2rem 0 0.8rem 0; }
+    letter-spacing:0.18em; text-transform:uppercase; color:#6885ad; margin:2.2rem 0 0.8rem 0; }
 
-/* ---- verdict ---- */
+/* verdict */
 .verdict { margin-top:1.5rem; padding:1.1rem 1.5rem; border-radius:14px; font-size:0.96rem;
     font-weight:500; line-height:1.55; }
-.verdict-pos { background:rgba(45,212,191,0.08); border:1px solid rgba(45,212,191,0.35);
-    color:#7ff0df; }
-.verdict-neg { background:rgba(255,107,107,0.07); border:1px solid rgba(255,107,107,0.3);
-    color:#ffa8a8; }
+.verdict-pos { background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.35);
+    color:#6ee7b7; }
+.verdict-neg { background:rgba(248,113,113,0.07); border:1px solid rgba(248,113,113,0.3);
+    color:#fca5a5; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -211,7 +209,7 @@ st.markdown('<div class="section-label">Equity curve · gross vs net of costs</d
             unsafe_allow_html=True)
 
 import altair as alt
-net_color = "#2dd4bf" if net_ret > 0 else "#ff6b6b"
+net_color = "#34d399" if net_ret > 0 else "#f87171"
 plot = pd.DataFrame({
     "t": np.arange(len(bt)),
     "gross (before costs)": bt["equity_gross"].values,
@@ -221,17 +219,18 @@ plot = pd.DataFrame({
 chart = (alt.Chart(plot).mark_line(strokeWidth=2.5)
          .encode(
             x=alt.X("t:Q", title=None,
-                    axis=alt.Axis(grid=False, labelColor="#5e8a84",
-                                  domainColor="#1c3b40", tickColor="#1c3b40")),
+                    axis=alt.Axis(grid=False, labelColor="#6885ad",
+                                  domainColor="#22344f", tickColor="#22344f")),
             y=alt.Y("equity:Q", title=None,
-                    axis=alt.Axis(grid=True, gridColor="#10282d",
-                                  labelColor="#5e8a84", domainColor="#1c3b40", tickColor="#1c3b40")),
+                    axis=alt.Axis(grid=True, gridColor="#13233c",
+                                  labelColor="#6885ad", domainColor="#22344f", tickColor="#22344f")),
             color=alt.Color("series:N",
                     scale=alt.Scale(domain=["gross (before costs)", "net (after costs)"],
-                                    range=["#3b9c93", net_color]),
-                    legend=alt.Legend(title=None, labelColor="#8aa6a1", orient="top",
-                                      direction="horizontal", symbolType="stroke",
-                                      labelLimit=200, padding=10)))
+                                    range=["#60a5fa", net_color]),
+                    legend=alt.Legend(title=None, labelColor="#8fa3c2",
+                                      orient="top-left", direction="vertical",
+                                      symbolType="stroke", symbolStrokeWidth=3,
+                                      labelFontSize=12, rowPadding=6, offset=8)))
          .properties(height=380, background="transparent")
          .configure_view(strokeWidth=0))
 st.altair_chart(chart, use_container_width=True)
